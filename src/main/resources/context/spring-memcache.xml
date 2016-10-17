@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+    <!-- 自动扫面注解包 -->
+    <context:annotation-config/>
+    <context:component-scan base-package="com.kunteng.*"/>
+    <!-- Xmemcached -->
+    <bean name="memcachedClientBuilder"
+          class="net.rubyeye.xmemcached.XMemcachedClientBuilder">
+        <constructor-arg>
+            <list>
+                <bean class="java.net.InetSocketAddress">
+                    <constructor-arg>
+                        <value>192.168.19.81</value>
+                    </constructor-arg>
+                    <constructor-arg>
+                        <value>11211</value>
+                    </constructor-arg>
+                </bean>
+                <bean class="java.net.InetSocketAddress">
+                    <constructor-arg>
+                        <value>192.168.19.82</value>
+                    </constructor-arg>
+                    <constructor-arg>
+                        <value>11211</value>
+                    </constructor-arg>
+                </bean>
+                <bean class="java.net.InetSocketAddress">
+                    <constructor-arg>
+                        <value>192.168.19.83</value>
+                    </constructor-arg>
+                    <constructor-arg>
+                        <value>11211</value>
+                    </constructor-arg>
+                </bean>
+                <bean class="java.net.InetSocketAddress">
+                    <constructor-arg>
+                        <value>192.168.19.84</value>
+                    </constructor-arg>
+                    <constructor-arg>
+                        <value>11211</value>
+                    </constructor-arg>
+                </bean>
+            </list>
+        </constructor-arg>
+        <constructor-arg>
+            <list>
+                <value>1</value>
+                <value>1</value>
+                <value>1</value>
+                <value>1</value>
+            </list>
+        </constructor-arg>
+        <!-- 授权验证信息，仅在xmemcached 1.2.5及以上版本有效 仅支持二进制协议。 <property name="authInfoMap">
+            <map> <entry key-ref="server1"> <bean class="net.rubyeye.xmemcached.auth.AuthInfo"
+            factory-method="typical"> <constructor-arg index="0"> <value>cacheuser</value>
+            </constructor-arg> <constructor-arg index="1"> <value>123456</value> </constructor-arg>
+            </bean> </entry> </map> </property> -->
+        <!-- nio连接池大小，默认为1 -->
+        <property name="connectionPoolSize" value="5"></property>
+        <!-- 协议工厂 二进制协议 ,default is TextCommandFactory -->
+        <property name="commandFactory">
+            <bean class="net.rubyeye.xmemcached.command.BinaryCommandFactory"></bean>
+        </property>
+        <!-- Distributed strategy 分布策略，一致性哈希 -->
+        <property name="sessionLocator">
+            <bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator"></bean>
+        </property>
+        <!-- Serializing transcoder 序列化转换器 -->
+        <property name="transcoder">
+            <bean class="net.rubyeye.xmemcached.transcoders.SerializingTranscoder"/>
+        </property>
+        <!-- ByteBuffer allocator IoBuffer分配器 -->
+        <property name="bufferAllocator">
+            <bean class="net.rubyeye.xmemcached.buffer.SimpleBufferAllocator"></bean>
+        </property>
+    </bean>
+    <!-- Use factory bean to build memcached client -->
+    <bean name="memcachedClient" factory-bean="memcachedClientBuilder"
+          factory-method="build" destroy-method="shutdown"/>
+</beans>
