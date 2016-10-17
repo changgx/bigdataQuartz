@@ -143,18 +143,21 @@ public class RouterService {
         }
         return map;
     }
-    public void dealInfo(Map<String,Object> data, Map<String, Integer> mapNew, Map<String, Integer> mapOld, String channelId) {
+    public void dealInfo(String data, Map<String, Integer> mapNew, Map<String, Integer> mapOld, String channelId) {
         Map<String, Integer> map = new HashMap();
-        JSONObject jsonObject = JSONObject.fromObject(data);
-
-
         JSONArray jsonArray = JSONArray.fromObject(data);
+        log.info("=============jsonArray.size()============");
+        log.info(jsonArray.size());
+        log.info("==============jsonArray.size()===========");
         String scanMac = "";
         for (int i = 0; i < jsonArray.size(); i++) {
+            log.info("============jsonArray.get(i)=============");
+            log.info(jsonArray.get(i));
+            log.info("=============jsonArray.get(i)============");
             scanMac = (String) jsonArray.getJSONObject(i).get("scanMac");
-            log.info("=========================");
+            log.info("============scanMac=============");
             log.info(scanMac);
-            log.info("=========================");
+            log.info("============scanMac=============");
             String[] a = scanMac.split("\\|");
             if (!"".equals(a[0])) {
                 for (int j = 0; j < a.length; j++) {

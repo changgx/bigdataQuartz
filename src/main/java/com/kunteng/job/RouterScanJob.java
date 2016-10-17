@@ -5,11 +5,10 @@ package com.kunteng.job;/**
 import com.kunteng.service.RouterService;
 import com.kunteng.util.DateUtil;
 import com.kunteng.util.JedisSentinelTemplate;
-import com.kunteng.util.SpringContextUtil;
+import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +24,7 @@ public class RouterScanJob {
     @Autowired
     private JedisSentinelTemplate redisSentinelTemplate;
 
-    public RouterScanJob(){
+    public RouterScanJob() {
 
     }
 
@@ -53,7 +52,7 @@ public class RouterScanJob {
             log.info("===============map======================");
             Map<String, Integer> mapMacNew = new HashMap();
             Map<String, Integer> mapMacOld = new HashMap();
-            routerService.dealInfo(map, mapMacNew, mapMacOld, channelId);
+            routerService.dealInfo(JSONObject.fromObject(map).getString("data"), mapMacNew, mapMacOld, channelId);
             log.info("===============mapMacNew======================");
             log.info(mapMacNew);
             log.info("===============mapMacNew======================");
