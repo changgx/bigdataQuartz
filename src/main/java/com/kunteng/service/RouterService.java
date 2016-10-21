@@ -48,8 +48,8 @@ public class RouterService {
     }
 
     public void insertAvgTimeDay(Map map) {
-        String sql=" INSERT INTO router_avg_time_day (router,date,new_flag,avgtime,visitor_num,tenmin,thirtymin,onehour,twohour,other) " +
-                "        VALUES (?,?,?,?,?,?,?,?,?,?)";
+        String sql="replace into router_avg_time_day (router,date,new_flag,avgtime,visitor_num,tenmin,thirtymin,onehour,twohour,other) " +
+                "   VALUES (?,?,?,?,?,?,?,?,?,?)";
 
         String[] params=new String[10];
         params[0]=map.get("router").toString();
@@ -62,7 +62,7 @@ public class RouterService {
         params[7]=map.get("onehour").toString();
         params[8]=map.get("twohour").toString();
         params[9]=map.get("other").toString();
-        jdbcTemplate.update(sql,map.get("router"),params);
+        jdbcTemplate.update(sql,params);
         //routerDao.insertAvgTimeDay(map);
     }
     public Map<String, Object> getValueThread(final String mac, String time) {
